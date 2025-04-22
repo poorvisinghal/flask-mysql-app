@@ -23,3 +23,51 @@ spec:
           envFrom:
             - configMapRef:
                 name: env-config-app
+New
+2:57
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-mysql
+  namespace: webserver
+  labels:
+    name: flask-mysql-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mysql-app-pod
+  template:
+    metadata:
+      labels:
+        name: mysql-app-pod
+    spec:
+      containers:
+        - name: mysqldb
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+          startupProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 5
+            failureThreshold: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+            - name: data-mysql
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: config-mysql
+        - name: data-mysql
+          persistentVolumeClaim:
+            claimName: pvc-mysql
