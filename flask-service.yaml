@@ -6,6 +6,8 @@ metadata:
   labels:
     app: flask-mysql-app
 spec:
+  destination:
+    namespace: webserver
   selector:
     name: flask-app-pod
   type: NodePort
