@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: deployment-mysql
   namespace: webserver
+  labels:
+    name: flask-mysql-app
 spec:
   replicas: 1
   selector:
@@ -30,13 +32,6 @@ spec:
             initialDelaySeconds: 5
             failureThreshold: 10
             periodSeconds: 10
-          resources:
-            requests:
-              cpu: 250m
-              memory: 1Gi
-            limits:
-              cpu: 500m
-              memory: 1.5Gi
           volumeMounts:
             - name: mysql-initdb
               mountPath: /docker-entrypoint-initdb.d
