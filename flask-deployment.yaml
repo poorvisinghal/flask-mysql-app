@@ -1,37 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-ui-deployment
-  namespace: webserver
-  labels:
-    name: flask-mysql-app
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: flask-app-pod
-  template:
-    metadata:
-      labels:
-        name: flask-app-pod
-    spec:
-      containers:
-        - name: web-app
-          image: thanandock/flask-mysql-app:1.0.0
-          ports:
-            - containerPort: 5000
-          envFrom:
-            - configMapRef:
-                name: env-config-app
-New
-2:57
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: deployment-mysql
-  namespace: webserver
-  labels:
-    name: flask-mysql-app
 spec:
   replicas: 1
   selector:
@@ -71,3 +41,51 @@ spec:
         - name: data-mysql
           persistentVolumeClaim:
             claimName: pvc-mysql
+
+
+
+
+
+
+
+Poorvi .
+  2:42 PM
+kubectl patch pvc pvc-mysql -n default -p '{"metadata":{"finalizers":null}}'
+2:43
+kubectl delete pvc pvc-mysql -n default
+2:43
+kubectl patch pv pv-mysql -p '{"spec":{"claimRef":null}}'
+kubectl delete pv pv-mysql --force --grace-period=0
+2:44
+kubectl patch pv pv-mysql -p '{"metadata":{"finalizers":[]}}' --type=merge
+2:44
+kubectl delete pv pv-mysql --force --grace-period=0
+
+
+Mehtabpreet Kaur
+  2:57 PM
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ui-deployment
+  namespace: webserver
+  labels:
+    name: flask-mysql-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flask-app-pod
+  template:
+    metadata:
+      labels:
+        name: flask-app-pod
+    spec:
+      containers:
+        - name: web-app
+          image: thanandock/flask-mysql-app:1.0.0
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: env-config-app
