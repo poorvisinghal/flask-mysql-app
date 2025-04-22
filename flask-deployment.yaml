@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ui-deployment
+  labels:
+    name: flask-mysql-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flask-app-pod
+  template:
+    metadata:
+      labels:
+        name: flask-app-pod
+    spec:
+      containers:
+        - name: web-app
+          image: thanandock/flask-mysql-app:1.0.0
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: env-config-app

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mysql
+  labels:
+    name: flask-mysql-app
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  gcePersistentDisk:
+    pdName: mysql-disk
+    fsType: ext4
