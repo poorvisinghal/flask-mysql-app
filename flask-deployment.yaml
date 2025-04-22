@@ -23,3 +23,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: env-config-app
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              ephemeral-storage: "1Gi"
