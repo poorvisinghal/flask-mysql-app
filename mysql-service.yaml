@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
+  namespace: webserver
   labels:
     app: flask-mysql-app
 spec:
