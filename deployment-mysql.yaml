@@ -32,6 +32,12 @@ spec:
             initialDelaySeconds: 5
             failureThreshold: 10
             periodSeconds: 10
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "1Gi"
+            limits:
+              ephemeral-storage: "1Gi"
           volumeMounts:
             - name: mysql-initdb
               mountPath: /docker-entrypoint-initdb.d
